@@ -18,11 +18,10 @@ export class PuppeteerMermaidRenderer implements MermaidRenderer {
 		const capturedCharts = new Map<string, Buffer>();
 
 		await downloadBrowser();
-		//for (const chart of charts) {
 		const promises = charts.map(async (chart) => {
 			const puppeteerLaunchConfig = {
 				executablePath: puppeteer.executablePath(),
-				headless: "new",
+				headless: true,
 				args: [
 					"--ignore-certificate-errors",
 					"--no-sandbox",
