@@ -10,8 +10,8 @@ import {
 	Publisher,
 	MermaidRendererPlugin,
 } from "@markdown-confluence/lib";
-import { PuppeteerMermaidRenderer } from "@markdown-confluence/mermaid-puppeteer-renderer";
 import { ConfluenceClient } from "confluence.js";
+import { PuppeteerMermaidRenderer } from "@markdown-confluence/mermaid-puppeteer-renderer";
 
 // Define the main function
 async function main() {

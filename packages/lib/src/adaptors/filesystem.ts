@@ -98,9 +98,8 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 	}
 
 	async loadMarkdownFile(absoluteFilePath: string): Promise<MarkdownFile> {
-		const { data, content: contents } = await this.getFileContent(
-			absoluteFilePath,
-		);
+		const { data, content: contents } =
+			await this.getFileContent(absoluteFilePath);
 
 		const folderName = path.basename(path.parse(absoluteFilePath).dir);
 		const fileName = path.basename(absoluteFilePath);
@@ -175,7 +174,12 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 		const absoluteFilePath = await this.findClosestFile(
 			searchPath,
 			path.dirname(
-				path.join(this.settings.contentRoot, referencedFromFilePath),
+				path.isAbsolute(referencedFromFilePath)
+					? referencedFromFilePath
+					: path.join(
+							this.settings.contentRoot,
+							referencedFromFilePath,
+						),
 			),
 		);
 
@@ -259,7 +263,7 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 async function isFile(filePath: string): Promise<boolean> {
 	try {
 		const stats = await fs.stat(filePath);
-		return stats.isFile();
+		return stats?.isFile();
 	} catch (error: unknown) {
 		return false; // Just return false instead of rethrowing any other errors.
 	}

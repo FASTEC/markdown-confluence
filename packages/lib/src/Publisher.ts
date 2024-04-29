@@ -163,6 +163,9 @@ export class Publisher {
 		node: ConfluenceNode,
 	): Promise<FilePublishResult> {
 		try {
+			if (node.file.fileName.endsWith("4Pro-Bundle.md")) {
+				console.log("Converting to ADF", node.file.fileName);
+			}
 			const successfulUploadResult = await this.updatePageContent(
 				node.ancestors,
 				node.version,
@@ -293,7 +296,7 @@ export class Publisher {
 						ancestors: ancestors.map((ancestor) => ({
 							id: ancestor,
 						})),
-				  }),
+					}),
 		};
 
 		if (

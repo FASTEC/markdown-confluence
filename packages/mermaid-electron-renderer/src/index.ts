@@ -27,6 +27,7 @@ const pluginMermaidConfig = {
 };
 
 export class ElectronMermaidRenderer implements MermaidRenderer {
+	fileExtension: string = "svg";
 	constructor(
 		private extraStyleSheets: string[],
 		private extraStyles: string[],

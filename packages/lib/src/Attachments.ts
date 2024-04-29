@@ -1,6 +1,7 @@
 import SparkMD5 from "spark-md5";
 import { RequiredConfluenceClient, LoaderAdaptor } from "./adaptors";
 import sizeOf from "image-size";
+import path from "path";
 
 export type ConfluenceImageStatus = "existing" | "uploaded";
 
@@ -56,7 +57,10 @@ export async function uploadBuffer(
 				filename: uploadFilename,
 				minorEdit: false,
 				comment: currentFileMd5,
-				contentType: "image/png",
+				contentType:
+					path.extname(uploadFilename) === "svg"
+						? "image/svg"
+						: "image/png",
 			},
 		],
 	};

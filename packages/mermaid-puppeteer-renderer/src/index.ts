@@ -12,6 +12,7 @@ interface RemoteWindowedCustomFunctions {
 }
 
 export class PuppeteerMermaidRenderer implements MermaidRenderer {
+	fileExtension: string = "svg";
 	async captureMermaidCharts(
 		charts: ChartData[],
 	): Promise<Map<string, Buffer>> {

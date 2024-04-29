@@ -12,5 +12,5 @@
     "target":"ESNext",
   },
   "include":[ "**/*.ts", "**/*.tsx", "**/**.js", "**/**.jsx", ],
-  "exclude": ["node_modules", "packages/**/dist/*", "dist/*", "**/*.test.ts", "**/jest.config.ts"]
+  "exclude": ["node_modules", "packages/**/dist/*", "dist/*", "**/*.test.ts", "**/jest.config.*"]
 }

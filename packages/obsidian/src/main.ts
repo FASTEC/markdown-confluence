@@ -7,8 +7,8 @@ import {
 	renderADFDoc,
 	MermaidRendererPlugin,
 	UploadAdfFileResult,
+	SvgMermaidRenderer,
 } from "@markdown-confluence/lib";
-import { ElectronMermaidRenderer } from "@markdown-confluence/mermaid-electron-renderer";
 import { ConfluenceSettingTab } from "./ConfluenceSettingTab";
 import ObsidianAdaptor from "./adaptors/obsidian";
 import { CompletedModal } from "./CompletedModal";
@@ -65,13 +65,14 @@ export default class ConfluencePlugin extends Plugin {
 			this.app,
 		);
 
-		const mermaidItems = await this.getMermaidItems();
-		const mermaidRenderer = new ElectronMermaidRenderer(
-			mermaidItems.extraStyleSheets,
-			mermaidItems.extraStyles,
-			mermaidItems.mermaidConfig,
-			mermaidItems.bodyStyles,
-		);
+		// const mermaidItems = await this.getMermaidItems();
+		// const mermaidRenderer = new ElectronMermaidRenderer(
+		// 	mermaidItems.extraStyleSheets,
+		// 	mermaidItems.extraStyles,
+		// 	mermaidItems.mermaidConfig,
+		// 	mermaidItems.bodyStyles,
+		// );
+		const mermaidRenderer = new SvgMermaidRenderer();
 		const confluenceClient = new ObsidianConfluenceClient({
 			host: this.settings.confluenceBaseUrl,
 			authentication: {

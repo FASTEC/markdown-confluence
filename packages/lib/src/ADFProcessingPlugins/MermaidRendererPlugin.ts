@@ -5,19 +5,13 @@ import { ADFProcessingPlugin, PublisherFunctions } from "./types";
 import { ADFEntity } from "@atlaskit/adf-utils/types";
 import SparkMD5 from "spark-md5";
 
-export function getMermaidFileName(mermaidContent: string | undefined) {
-	const mermaidText = mermaidContent ?? "flowchart LR\nid1[Missing Chart]";
-	const pathMd5 = SparkMD5.hash(mermaidText);
-	const uploadFilename = `RenderedMermaidChart-${pathMd5}.png`;
-	return { uploadFilename, mermaidText };
-}
-
 export interface ChartData {
 	name: string;
 	data: string;
 }
 
 export interface MermaidRenderer {
+	fileExtension: string;
 	captureMermaidCharts(charts: ChartData[]): Promise<Map<string, Buffer>>;
 }
 
@@ -40,7 +34,7 @@ export class MermaidRendererPlugin
 
 		const mermaidNodesToUpload = new Set(
 			mermaidNodes.map((node) => {
-				const mermaidDetails = getMermaidFileName(
+				const mermaidDetails = this.getMermaidFileName(
 					node?.content?.at(0)?.text,
 				);
 				return {
@@ -96,7 +90,7 @@ export class MermaidRendererPlugin
 							return;
 						}
 						const mermaidFilename =
-							getMermaidFileName(mermaidContent);
+							this.getMermaidFileName(mermaidContent);
 
 						if (!imageMap[mermaidFilename.uploadFilename]) {
 							return;
@@ -129,5 +123,13 @@ export class MermaidRendererPlugin
 			}) || afterAdf;
 
 		return afterAdf as JSONDocNode;
+	}
+
+	getMermaidFileName(mermaidContent: string | undefined) {
+		const mermaidText =
+			mermaidContent ?? "flowchart LR\nid1[Missing Chart]";
+		const pathMd5 = SparkMD5.hash(mermaidText);
+		const uploadFilename = `RenderedMermaidChart-${pathMd5}.${this.mermaidRenderer.fileExtension}`;
+		return { uploadFilename, mermaidText };
 	}
 }

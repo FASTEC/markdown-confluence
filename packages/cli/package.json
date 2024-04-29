@@ -16,14 +16,16 @@
     "author": "andymac4182",
     "license": "Apache 2.0",
     "devDependencies": {
-        "confluence.js": "^1.7.4",
+        "@markdown-confluence/lib": "5.5.2",
+        "@markdown-confluence/mermaid-puppeteer-renderer": "5.5.2",
         "boxen": "7.1.1",
         "chalk": "5.3.0",
-        "@markdown-confluence/lib": "5.5.2",
-        "@markdown-confluence/mermaid-puppeteer-renderer": "5.5.2"
+        "confluence.js": "^1.7.4"
     },
-    "dependencies": {},
-    "bundleDependencies": true,
+    "dependencies": {
+        "mermaid": "^10.9.0"
+    },
+    "bundleDependencies": [],
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/",
