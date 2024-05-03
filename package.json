@@ -12,15 +12,15 @@
         "test": "npm test -ws --if-present"
     },
     "devDependencies": {
-        "@types/node": "^20.12.7",
-        "@typescript-eslint/eslint-plugin": "^7.7.1",
-        "@typescript-eslint/parser": "^7.7.1",
-        "builtin-modules": "3.3.0",
+        "@types/node": "^20.12.8",
+        "@typescript-eslint/eslint-plugin": "^7.8.0",
+        "@typescript-eslint/parser": "^7.8.0",
+        "builtin-modules": "4.0.0",
         "esbuild": "0.20.2",
         "esbuild-node-externals": "^1.13.0",
         "esbuild-plugin-copy": "^2.1.1",
-        "eslint": "^8.57.0",
-        "eslint-config-prettier": "^9.1.0",
+        "eslint": "^8.56.1",
+        "eslint-config-prettier": "^8.10.0",
         "husky": "^9.0.11",
         "lint-staged": "15.2.2",
         "prettier": "3.2.5",
@@ -39,5 +39,8 @@
     ],
     "lint-staged": {
         "packages/**/*.ts": "prettier --write"
+    },
+    "dependencies": {
+        "uuid": "^9.0.1"
     }
 }
