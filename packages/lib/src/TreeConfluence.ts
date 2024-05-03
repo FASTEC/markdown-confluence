@@ -218,9 +218,8 @@ async function ensurePageExists(
 		title: file.pageTitle,
 		expand: ["version", "body.atlas_doc_format", "ancestors"],
 	};
-	const contentByTitle = await confluenceClient.content.getContent(
-		searchParams,
-	);
+	const contentByTitle =
+		await confluenceClient.content.getContent(searchParams);
 
 	const currentPage = contentByTitle.results[0];
 
@@ -230,7 +229,7 @@ async function ensurePageExists(
 			!currentPage.ancestors?.some((ancestor) => ancestor.id == topPageId)
 		) {
 			throw new Error(
-				`${file.pageTitle} is trying to overwrite a page outside the page tree from the selected top page`,
+				`${file.pageTitle} is trying to overwrite a page outside the page tree from the selected top page. Please rename the page to make the name unique within the space.`,
 			);
 		}
 

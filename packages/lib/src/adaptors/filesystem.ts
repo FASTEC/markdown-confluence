@@ -35,10 +35,9 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 		absoluteFilePath: string,
 		values: Partial<ConfluencePerPageAllValues>,
 	): Promise<void> {
-		const actualAbsoluteFilePath = path.join(
-			this.settings.contentRoot,
-			absoluteFilePath,
-		);
+		const actualAbsoluteFilePath = path.isAbsolute(absoluteFilePath)
+			? absoluteFilePath
+			: path.join(this.settings.contentRoot, absoluteFilePath);
 		try {
 			if (!(await fs.stat(actualAbsoluteFilePath)).isFile()) {
 				return;

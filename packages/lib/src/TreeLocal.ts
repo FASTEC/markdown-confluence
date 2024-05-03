@@ -5,6 +5,7 @@ import { folderFile } from "./FolderFile";
 import { JSONDocNode } from "@atlaskit/editor-json-transformer";
 import { LocalAdfFileTreeNode } from "./Publisher";
 import { ConfluenceSettings } from "./Settings";
+import * as fs from "fs";
 
 const findCommonPath = (paths: string[]): string => {
 	const [firstPath, ...rest] = paths;
@@ -98,9 +99,9 @@ const processNode = (commonPath: string, node: LocalAdfFileTreeNode) => {
 		}
 	}
 
-	const childCommonPath = path.parse(
-		node?.file?.absoluteFilePath ?? commonPath,
-	).dir;
+	let childCommonPath = node?.file?.absoluteFilePath ?? commonPath;
+	if (fs.statSync(childCommonPath).isFile())
+		childCommonPath = path.dirname(childCommonPath);
 
 	node.children.forEach((childNode) =>
 		processNode(childCommonPath, childNode),
