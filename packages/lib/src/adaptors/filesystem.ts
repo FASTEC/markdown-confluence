@@ -127,7 +127,9 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 		});
 
 		for (const entry of entries) {
-			const absoluteFilePath = path.join(folderPath, entry.name);
+			const absoluteFilePath = path.isAbsolute(entry.name)
+				? entry.name
+				: path.join(folderPath, entry.name);
 
 			if (entry.isFile() && path.extname(entry.name) === ".md") {
 				const file = await this.loadMarkdownFile(absoluteFilePath);

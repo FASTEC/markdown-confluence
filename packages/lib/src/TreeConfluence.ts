@@ -132,8 +132,10 @@ async function createFileStructureInConfluence(
 	});
 
 	const childDetails = await Promise.all(childDetailsTasks);
-
-	const pageUrl = `${settings.confluenceBaseUrl}/wiki/spaces/${spaceKey}/pages/${file.pageId}/`;
+	const pageUrl = new URL(
+		`/wiki/spaces/${spaceKey}/pages/${file.pageId}/`,
+		settings.confluenceBaseUrl,
+	).href;
 	return {
 		file: { ...file, pageUrl },
 		version,

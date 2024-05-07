@@ -14,9 +14,15 @@ export type ConfluencePerPageConfig = {
 	dontChangeParentPageId: FrontmatterConfig<boolean, "boolean">;
 	blogPostDate: FrontmatterConfig<string | undefined, "text">;
 	contentType: FrontmatterConfig<PageContentType, "options">;
+	sortOrder: FrontmatterConfig<number, "number">;
 };
 
-export type InputType = "text" | "array-text" | "boolean" | "options";
+export type InputType =
+	| "text"
+	| "array-text"
+	| "boolean"
+	| "options"
+	| "number";
 export type InputValidator<IN> = (value: IN) => {
 	valid: boolean;
 	errors: Error[];
@@ -78,6 +84,24 @@ export const conniePerPageConfig: ConfluencePerPageConfig = {
 			}
 		},
 		process: (publish) => (typeof publish === "boolean" ? publish : false),
+	},
+	sortOrder: {
+		key: "sort-order",
+		default: 1000000,
+		inputType: "number",
+		inputValidator: (value) => {
+			switch (typeof value) {
+				case "number":
+					return { valid: true, errors: [] };
+				default:
+					return {
+						valid: false,
+						errors: [new Error("Publish should be a number.")],
+					};
+			}
+		},
+		process: (sortOrder) =>
+			typeof sortOrder === "number" ? sortOrder : 1000000,
 	},
 	pageTitle: {
 		key: "connie-title",

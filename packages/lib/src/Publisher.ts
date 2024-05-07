@@ -40,6 +40,7 @@ export interface LocalAdfFile {
 	dontChangeParentPageId: boolean;
 	contentType: PageContentType;
 	blogPostDate: string | undefined;
+	sortOrder: number;
 }
 
 export interface ConfluenceAdfFile {

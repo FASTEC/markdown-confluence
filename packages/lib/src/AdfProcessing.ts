@@ -7,6 +7,7 @@ import { ADFEntity } from "@atlaskit/adf-utils/types";
 import { heading, li, ol, p, text } from "@atlaskit/adf-utils/builders";
 import { v4 as uuidv4 } from "uuid";
 import { TextDefinition } from "@atlaskit/adf-schema";
+import { URL } from "url";
 
 type ExtractedInlineComment = {
 	pluginInternalId: string;
@@ -679,7 +680,10 @@ function processWikilinkToActualLink(
 					const linkPage = fileToPageIdMap[pagename];
 
 					if (linkPage) {
-						const confluenceUrl = `${settings.confluenceBaseUrl}/wiki/spaces/${linkPage.spaceKey}/pages/${linkPage.pageId}${wikilinkUrl.hash}`;
+						const confluenceUrl = new URL(
+							`/wiki/spaces/${linkPage.spaceKey}/pages/${linkPage.pageId}${wikilinkUrl.hash}`,
+							settings.confluenceBaseUrl,
+						).href;
 						node.marks[0].attrs["href"] = confluenceUrl;
 						if (node.text === `${pathName}${wikilinkUrl.hash}`) {
 							node.type = "inlineCard";

@@ -3,7 +3,7 @@ import { MarkdownFile } from "./adaptors";
 import { convertMDtoADF } from "./MdToADF";
 import { folderFile } from "./FolderFile";
 import { JSONDocNode } from "@atlaskit/editor-json-transformer";
-import { LocalAdfFileTreeNode } from "./Publisher";
+import { LocalAdfFile, LocalAdfFileTreeNode } from "./Publisher";
 import { ConfluenceSettings } from "./Settings";
 import * as fs from "fs";
 
@@ -45,6 +45,13 @@ const addFileToTree = (
 
 	if (remainingPath.length === 0) {
 		const adfFile = convertMDtoADF(file, settings);
+		const sortOrder = Number.parseInt(
+			file.frontmatter["sort-order"] as string,
+		);
+		adfFile.sortOrder = 100000;
+		if (Number.isInteger(sortOrder)) {
+			adfFile.sortOrder = sortOrder;
+		}
 		treeNode.children.push({
 			...createTreeNode(folderName),
 			file: adfFile,
@@ -61,6 +68,7 @@ const addFileToTree = (
 
 		addFileToTree(childNode, file, remainingPath.join(path.sep), settings);
 	}
+	treeNode.children.sort((a, b) => sortFiles(a.file, b.file));
 };
 
 const processNode = (commonPath: string, node: LocalAdfFileTreeNode) => {
@@ -85,7 +93,9 @@ const processNode = (commonPath: string, node: LocalAdfFileTreeNode) => {
 		} else {
 			node.file = {
 				folderName: node.name,
-				absoluteFilePath: path.join(commonPath, node.name),
+				absoluteFilePath: path.isAbsolute(node.name)
+					? node.name
+					: path.join(commonPath, node.name),
 				fileName: `${node.name}.md`,
 				contents: folderFile as JSONDocNode,
 				pageTitle: node.name,
@@ -95,6 +105,7 @@ const processNode = (commonPath: string, node: LocalAdfFileTreeNode) => {
 				dontChangeParentPageId: false,
 				contentType: "page",
 				blogPostDate: undefined,
+				sortOrder: 100000,
 			};
 		}
 	}
@@ -144,4 +155,21 @@ function checkUniquePageTitle(
 	rootNode.children.forEach((child) =>
 		checkUniquePageTitle(child, pageTitles),
 	);
+}
+
+function sortFiles(
+	file: LocalAdfFile | undefined,
+	file1: LocalAdfFile | undefined,
+): number {
+	const defaultSortOrder = 100000;
+	let sortCmp =
+		(file?.sortOrder ?? defaultSortOrder) -
+		(file1?.sortOrder ?? defaultSortOrder);
+	if (sortCmp == 0) {
+		sortCmp =
+			(file?.fileName ?? file?.folderName)?.localeCompare(
+				file1?.fileName ?? file1?.folderName ?? "ZZZZZZ",
+			) ?? defaultSortOrder;
+	}
+	return sortCmp;
 }
