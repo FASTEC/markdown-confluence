@@ -145,19 +145,18 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 
 	async getMarkdownFilesToUpload(): Promise<FilesToUpload> {
 		const files = await this.loadMarkdownFiles(this.settings.contentRoot);
+		const folderToPublish = path.join(
+			this.settings.contentRoot,
+			this.settings.folderToPublish,
+		);
 		const filesToPublish = [];
 		for (const file of files) {
 			try {
 				const frontMatter = file.frontmatter;
 
 				if (
-					((file.absoluteFilePath.startsWith(
-						this.settings.folderToPublish,
-					) ||
-						this.settings.folderToPublish === ".") &&
-						(!frontMatter ||
-							frontMatter["connie-publish"] !== false)) ||
-					(frontMatter && frontMatter["connie-publish"] === true)
+					file.absoluteFilePath.startsWith(folderToPublish) &&
+					(!frontMatter || frontMatter["connie-publish"] !== false)
 				) {
 					filesToPublish.push(file);
 				}
