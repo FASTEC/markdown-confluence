@@ -4,7 +4,6 @@
 	"version": "5.5.2",
 	"type": "module",
 	"scripts": {
-		"prepare": "husky install",
 		"predev-obsidian": "npm run build",
 		"dev-obsidian": "npm run dev --workspace=@markdown-confluence/lib & npm run dev --workspace=@markdown-confluence/mermaid-electron-renderer & npm run dev --workspace=obsidian-confluence",
 		"build": "npm run build -ws --if-present",
@@ -21,7 +20,6 @@
 		"esbuild-plugin-copy": "^2.1.1",
 		"eslint": "^8.56.1",
 		"eslint-config-prettier": "^8.10.0",
-		"husky": "^9.0.11",
 		"lint-staged": "15.2.2",
 		"prettier": "3.2.5",
 		"ts-jest": "^29.1.2",
